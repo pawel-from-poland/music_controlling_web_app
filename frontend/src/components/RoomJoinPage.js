@@ -4,38 +4,29 @@ import { Link } from 'react-router-dom';
 
 const RoomJoinPage = props => {
     const [roomCode, setRoomCode] = useState("");
-    const [error, setError] = useState("")
+    const [error, setError] = useState("");
 
-    const handleRoomCodeChange = e => setRoomCode(e.target.value);
-
-    const roomButtonPressed = () => {
+    const roomButtonPressed = async () => {
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({code: roomCode})
         };
-        fetch('/api/join-room', requestOptions)
-        .then((response) => response.ok ? props.history.push(`/room/${roomCode}`) : setError('Room not Found'))
-        .catch(error => console.log(error));
-    }
+        try {
+            const response = await fetch('/api/join-room', requestOptions);
+            if (response.ok) props.history.push(`/room/${roomCode}`);
+            else setError('Room not Found');
+        } catch (e) {
+            console.log(e)
+        };
+    };
 
     return (<Grid container spacing={1}>
         <Grid item xs={12} align="center">
-            <Typography variant="h4" component="h4">
-                Join a Room
-            </Typography>
+            <Typography variant="h4" component="h4">Join a Room</Typography>
         </Grid>
         <Grid item xs={12} align="center">
-            <TextField 
-                error={error}
-                label="Code"
-                placeholder="Enter a Room Code"
-                defaultValue= ""
-                helperText={error}
-                variant="outlined"
-                onChange={handleRoomCodeChange}
-                value={roomCode}
-            />
+            <TextField error={error} label="Code" placeholder="Enter a Room Code" helperText={error} variant="outlined" onChange={e => setRoomCode(e.target.value)} value={roomCode} />
         </Grid>
         <Grid item xs={12} align="center">
             <Button variant="contained" color="primary" onClick={roomButtonPressed}>Join</Button>

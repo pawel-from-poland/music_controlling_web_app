@@ -11,6 +11,8 @@ urlpatterns = [
     path('skip', SkipSong.as_view()),
     path('previous', PreviousSong.as_view()),
     path('seek', Seek.as_view()),
-    path('set_volume', SetVolume.as_view()),
-    path('set_repeat', SetRepeat.as_view()),
+    path('set-volume', SetVolume.as_view()),
+    path('set-repeat', SetRepeat.as_view()),
+    path('set-shuffle', SetShuffle.as_view()),
+    path('favorite', Favorite.as_view()),
 ]
